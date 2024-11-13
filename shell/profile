@@ -38,6 +38,7 @@ alias ca='conda activate'  # Activate a conda environment
 alias nb='jupyter notebook'  # Start Jupyter Notebook
 # alias pip='uv pip'
 
+alias md5sum='gmd5sum'
 
 # File Navigation
 alias cdh='cd ~/git'  # Go to the git directory
