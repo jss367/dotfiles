@@ -78,8 +78,6 @@ export HISTSIZE=1000000
 export HISTFILESIZE=1000000000
 export HISTCONTROL=ignoredups:erasedups  # No duplicate entries in history
 
-export PATH="/opt/homebrew/bin:$PATH"
-
 # Source external files if they exist
 include() {
     [[ -f "$1" ]] && source "$1"
@@ -87,6 +85,8 @@ include() {
 
 # Allow sublime text to be opened from command line with `subl`
 export PATH="/Applications/Sublime Text.app/Contents/SharedSupport/bin:$PATH"
+
+export PATH=$PATH:/Users/julius/.nvm/versions/node/v20.15.0/bin
 
 [[ -s /opt/homebrew/etc/profile.d/autojump.sh ]] && source /opt/homebrew/etc/profile.d/autojump.sh
 
@@ -96,4 +96,5 @@ include /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh  # 
 #include /usr/local/etc/profile.d/autojump.sh # Location on intel Macs
 include /opt/homebrew/etc/profile.d/autojump.sh # Location on Apple Silicon Macs
 
-include .credentials # Add passwords and other credentials
+include "$HOME/.credentials" # Add passwords and other credentials
+
