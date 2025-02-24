@@ -1,6 +1,10 @@
 This repo contains my personal dotfiles configuration.
 
-The files exist in this repo and are then symlinked to their other location. For example, .profile is symlinked like so: 
+The way to use this repo is to symlink the files you want to their respective locations. For example, if you want to use `.profile`, you would symlink it like so:
+
+* `ln -sf "$DOTFILES/shell/profile" "$HOME/.profile"`.
+
+For completeness, here are the symlinks you might use: 
 
 * `ln -sf "$DOTFILES/shell/profile" "$HOME/.profile"`.
 * `ln -sf "$DOTFILES/shell/zshrc" "$HOME/.zshrc"`.
