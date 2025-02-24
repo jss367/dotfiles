@@ -4,6 +4,8 @@ The way to use this repo is to symlink the files you want to their respective lo
 
 * `ln -sf "$DOTFILES/shell/profile" "$HOME/.profile"`.
 
+Before you do that, you should `export DOTFILES=/Users/julius/git/dotfiles`. Otherwise, you will need to use absolute paths.
+
 For completeness, here are the symlinks you might use: 
 
 * `ln -sf "$DOTFILES/shell/profile" "$HOME/.profile"`.
@@ -12,4 +14,4 @@ For completeness, here are the symlinks you might use:
 
 Note that the zshrc file is for Apple Silicon, so you might not want it on all systems.
 
-You might not have $DOTFILES set, so you may need to use absolute paths.
+
