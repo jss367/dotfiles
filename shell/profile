@@ -46,6 +46,10 @@ alias cdh='cd ~/git'  # Go to the git directory
 # Git Aliases
 alias gs='git status'  # Show git status
 
+# Make zoxide use j
+alias j='z'
+alias ji='zi'
+
 # Helper Functions
 function cheat() {
     curl cht.sh/$1  # Fetch cheat sheet from cht.sh
@@ -99,3 +103,10 @@ include /opt/homebrew/etc/profile.d/autojump.sh # Location on Apple Silicon Macs
 
 include "$HOME/.credentials" # Add passwords and other credentials
 
+. "$HOME/.cargo/env"
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/julius/.lmstudio/bin"
+
+bindkey "\e\e[D" backward-word
+bindkey "\e\e[C" forward-word
