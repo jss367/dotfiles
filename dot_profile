@@ -92,14 +92,9 @@ export PATH="/Applications/Sublime Text.app/Contents/SharedSupport/bin:$PATH"
 
 export PATH=$PATH:/Users/julius/.nvm/versions/node/v20.15.0/bin
 
-[[ -s /opt/homebrew/etc/profile.d/autojump.sh ]] && source /opt/homebrew/etc/profile.d/autojump.sh
-[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
-
 
 # Additional includes for ZSH plugins and utilities
 include /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh  # ZSH syntax highlighting
-#include /usr/local/etc/profile.d/autojump.sh # Location on intel Macs
-include /opt/homebrew/etc/profile.d/autojump.sh # Location on Apple Silicon Macs
 
 include "$HOME/.credentials" # Add passwords and other credentials
 
