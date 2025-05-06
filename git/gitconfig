@@ -6,3 +6,5 @@
 [user]
 	name = Julius Simonelli
 	email = julius.simonelli@gmail.com
+[credential]
+	helper = store
