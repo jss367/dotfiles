@@ -37,7 +37,7 @@ alias tm='tmux ls'  # List all tmux sessions
 alias ipy='ipython'  # IPython shortcut
 alias ca='conda activate'  # Activate a conda environment
 alias nb='jupyter notebook'  # Start Jupyter Notebook
-# alias pip='uv pip'
+alias upip='uv pip'
 
 alias md5sum='gmd5sum'
 
