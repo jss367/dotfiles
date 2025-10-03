@@ -103,6 +103,7 @@ include /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh  # 
 include /opt/homebrew/etc/profile.d/autojump.sh # Location on Apple Silicon Macs
 
 include "$HOME/.credentials" # Add passwords and other credentials
+include "$HOME/.work_profile" # Add other work-specific modifications
 
 . "$HOME/.cargo/env"
 
