@@ -18,6 +18,7 @@ alias ns='watch -d -n 0.5 nvidia-htop.py'  # Alternative GPU monitoring
 
 # Environment Variable Check
 alias ckenv='printenv | grep -i'  # Search environment variables
+alias ckal='alias | grep -i'  # Check aliases
 
 # Enhanced cat with syntax highlighting
 alias ccat='pygmentize -O style=monokai -f console256 -g'
