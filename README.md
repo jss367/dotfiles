@@ -1,17 +1,19 @@
 This repo contains my personal dotfiles configuration.
 
-The way to use this repo is to symlink the files you want to their respective locations. For example, if you want to use `.profile`, you would symlink it like so:
+## Setup
 
-* `ln -sf "$DOTFILES/shell/profile" "$HOME/.profile"`.
+Symlink the files to their expected locations:
 
-Before you do that, you should `export DOTFILES=/Users/julius/git/dotfiles`. Otherwise, you will need to use absolute paths.
+```bash
+ln -sf ~/git/dotfiles/shell/profile ~/.profile
+ln -sf ~/git/dotfiles/git/gitconfig ~/.gitconfig
+```
 
-For completeness, here are the symlinks you might use: 
+Then create the Oh My Zsh bridge so `.profile` gets sourced automatically:
 
-* `ln -sf "$DOTFILES/shell/profile" "$HOME/.profile"`.
-* `ln -sf "$DOTFILES/shell/zshrc" "$HOME/.zshrc"`.
-* `ln -sf "$DOTFILES/git/gitconfig" "$HOME/.gitconfig"`.
+```bash
+echo 'source ~/.profile' > ~/.oh-my-zsh/custom/profile.zsh
+```
 
-Note that the zshrc file is for Apple Silicon, so you might not want it on all systems.
-
+I don't symlink `.zshrc` because too many tools (conda, nvm, etc.) modify it during installation, which breaks symlinks or pollutes the repo with machine-specific paths. I use that one for any machine-specific stuff. All the portable config lives in `.profile` instead.
 
