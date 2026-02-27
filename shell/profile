@@ -103,7 +103,7 @@ function extract() {
 # General Exports
 export DATA="$HOME/data"
 export MODELS="$HOME/models"
-export FZF_DEFAULT_OPS="--extended"
+export FZF_DEFAULT_OPTS="--extended"
 export DEFAULT_CONDA_ENVIRONMENT="py314"
 
 # History Settings
