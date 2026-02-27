@@ -49,8 +49,15 @@ alias ipy='ipython'  # IPython shortcut
 alias ca='conda activate'  # Activate a conda environment
 alias nb='jupyter notebook'  # Start Jupyter Notebook
 alias upip='uv pip'
+alias pie='pip install -e .'  # Install package in editable mode
 
 [[ $_OS == "mac" ]] && alias md5sum='gmd5sum'
+
+# Shortcuts
+alias t='tail -v'
+alias mkdir='mkdir -pv'  # Auto-create parent directories
+alias pu='popd'
+alias pd='pushd'
 
 # File Navigation
 alias cdh='cd ~/git'  # Go to the git directory
@@ -93,6 +100,12 @@ function extract() {
     fi
 }
 
+# General Exports
+export DATA="$HOME/data"
+export MODELS="$HOME/models"
+export FZF_DEFAULT_OPS="--extended"
+export DEFAULT_CONDA_ENVIRONMENT="py314"
+
 # History Settings
 export HISTSIZE=1000000
 export HISTFILESIZE=1000000000
@@ -116,6 +129,11 @@ else
     include /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 fi
 
+# Homebrew (macOS)
+if [[ $_OS == "mac" ]] && [[ -d "${HOMEBREW_PREFIX:-/opt/homebrew}" ]]; then
+    eval "$("${HOMEBREW_PREFIX:-/opt/homebrew}/bin/brew" shellenv)"
+fi
+
 include "$HOME/.credentials" # Add passwords and other credentials
 include "$HOME/.work_profile" # Add other work-specific modifications
 
@@ -124,5 +142,8 @@ include "$HOME/.cargo/env"
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:$HOME/.lmstudio/bin"
 
-bindkey "\e\e[D" backward-word
-bindkey "\e\e[C" forward-word
+# Word navigation (zsh only)
+if [[ -n "$ZSH_VERSION" ]]; then
+    bindkey "\e\e[D" backward-word
+    bindkey "\e\e[C" forward-word
+fi
