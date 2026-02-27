@@ -1,6 +1,12 @@
+# OS Detection
+case "$(uname -s)" in
+    Darwin) _OS="mac" ;;
+    Linux)  _OS="linux" ;;
+esac
+
 # General Aliases
 alias rld='source ~/.zshrc'  # Reload ZSH configuration
-alias please='sudo $(history -p !!)'  # Redo last command with sudo
+alias please='sudo $(fc -ln -1)'  # Redo last command with sudo
 alias ff='find . -name'  # Find files; use asterisks
 alias fwrd='grep -rnwi . -e'  # Recursive word search in files with line numbers
 alias ftxt='grep -rni . -e'   # Recursive text search in files with line numbers
@@ -8,8 +14,13 @@ alias fpy='find . -name "*.py" | xargs grep --color'  # Find and grep Python fil
 alias grep='grep --color=auto'  # Grep with color
 alias hgrep='history | grep -v grep | grep '  # Search command history
 alias psgrep='ps aux | grep -v grep | grep '  # Search processes
-alias ll='ls -GlAFh'  # List with details, in human-readable format
-alias lls='ls -GlAFhS'  # List files sorted by size
+if [[ $_OS == "mac" ]]; then
+    alias ll='ls -GlAFh'
+    alias lls='ls -GlAFhS'
+else
+    alias ll='ls --color=auto -lAFh'
+    alias lls='ls --color=auto -lAFhS'
+fi
 alias showpath='echo $PATH | tr ":" "\n"'  # Show PATH with each directory on a new line
 
 # GPU Monitoring (requires gpustat and/or nvidia-smi)
@@ -39,7 +50,7 @@ alias ca='conda activate'  # Activate a conda environment
 alias nb='jupyter notebook'  # Start Jupyter Notebook
 alias upip='uv pip'
 
-alias md5sum='gmd5sum'
+[[ $_OS == "mac" ]] && alias md5sum='gmd5sum'
 
 # File Navigation
 alias cdh='cd ~/git'  # Go to the git directory
@@ -93,13 +104,17 @@ include() {
 }
 
 # Allow sublime text to be opened from command line with `subl`
-export PATH="/Applications/Sublime Text.app/Contents/SharedSupport/bin:$PATH"
+[[ $_OS == "mac" ]] && export PATH="/Applications/Sublime Text.app/Contents/SharedSupport/bin:$PATH"
 
-export PATH=$PATH:/Users/julius/.nvm/versions/node/v20.15.0/bin
+[[ $_OS == "mac" ]] && export PATH="$PATH:$HOME/.nvm/versions/node/v20.15.0/bin"
 
 
 # Additional includes for ZSH plugins and utilities
-include /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh  # ZSH syntax highlighting
+if [[ $_OS == "mac" ]]; then
+    include /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+else
+    include /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fi
 
 include "$HOME/.credentials" # Add passwords and other credentials
 include "$HOME/.work_profile" # Add other work-specific modifications
@@ -107,7 +122,7 @@ include "$HOME/.work_profile" # Add other work-specific modifications
 include "$HOME/.cargo/env"
 
 # Added by LM Studio CLI (lms)
-export PATH="$PATH:/Users/julius/.lmstudio/bin"
+export PATH="$PATH:$HOME/.lmstudio/bin"
 
 bindkey "\e\e[D" backward-word
 bindkey "\e\e[C" forward-word
