@@ -1,9 +1,9 @@
 # General Aliases
 alias rld='source ~/.zshrc'  # Reload ZSH configuration
 alias please='sudo $(history -p !!)'  # Redo last command with sudo
-alias ff='find . -name'  # Find files
-alias fwrd='grep -rnw . -e'  # Recursive word search in files with line numbers
-alias ftxt='grep -rn . -e'   # Recursive text search in files with line numbers
+alias ff='find . -name'  # Find files; use asterisks
+alias fwrd='grep -rnwi . -e'  # Recursive word search in files with line numbers
+alias ftxt='grep -rni . -e'   # Recursive text search in files with line numbers
 alias fpy='find . -name "*.py" | xargs grep --color'  # Find and grep Python files
 alias grep='grep --color=auto'  # Grep with color
 alias hgrep='history | grep -v grep | grep '  # Search command history
@@ -50,6 +50,9 @@ alias gs='git status'  # Show git status
 # Make zoxide use j
 alias j='z'
 alias ji='zi'
+
+alias cv='claude' # with vim keybindings
+alias cvd='claude --dangerously-skip-permissions'
 
 # Helper Functions
 function cheat() {
@@ -100,7 +103,7 @@ export PATH=$PATH:/Users/julius/.nvm/versions/node/v20.15.0/bin
 # Additional includes for ZSH plugins and utilities
 include /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh  # ZSH syntax highlighting
 #include /usr/local/etc/profile.d/autojump.sh # Location on intel Macs
-include /opt/homebrew/etc/profile.d/autojump.sh # Location on Apple Silicon Macs
+#include /opt/homebrew/etc/profile.d/autojump.sh # Location on Apple Silicon Macs
 
 include "$HOME/.credentials" # Add passwords and other credentials
 include "$HOME/.work_profile" # Add other work-specific modifications
