@@ -53,6 +53,7 @@ alias ji='zi'
 
 alias cv='claude' # with vim keybindings
 alias cvd='claude --dangerously-skip-permissions'
+alias cvr='claude --resume'
 
 # Helper Functions
 function cheat() {
