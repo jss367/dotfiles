@@ -73,6 +73,8 @@ alias cv='claude' # with vim keybindings
 alias cvd='claude --dangerously-skip-permissions'
 alias cvr='claude --resume'
 
+alias snas='ssh julius_admin@192.168.4.75'
+
 # Helper Functions
 function cheat() {
     curl cht.sh/$1  # Fetch cheat sheet from cht.sh
