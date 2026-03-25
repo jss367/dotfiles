@@ -1,0 +1,120 @@
+# AeroSpace config for workspace-based task separation
+config-version = 2
+
+# Start AeroSpace at login
+start-at-login = true
+
+# Normalization
+enable-normalization-flatten-containers = true
+enable-normalization-opposite-orientation-for-nested-containers = true
+
+accordion-padding = 30
+default-root-container-layout = 'tiles'
+default-root-container-orientation = 'auto'
+
+on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+
+# Keep your named workspaces alive even when empty
+persistent-workspaces = ['W1', 'W2', 'H1', 'H2']
+
+# Make all windows floating by default (no auto-tiling)
+[[on-window-detected]]
+    check-further-callbacks = true
+    run = 'layout floating'
+
+[key-mapping]
+    preset = 'qwerty'
+
+[gaps]
+    inner.horizontal = 8
+    inner.vertical   = 8
+    outer.left       = 8
+    outer.bottom     = 8
+    outer.top        = 8
+    outer.right      = 8
+
+[mode.main.binding]
+    # Layout controls
+    alt-slash = 'layout tiles horizontal vertical'
+    alt-comma = 'layout accordion horizontal vertical'
+
+    # Cycle through windows on current workspace
+    cmd-backtick = 'focus --boundaries-action wrap-around-the-workspace dfs-next'
+    cmd-shift-backtick = 'focus --boundaries-action wrap-around-the-workspace dfs-prev'
+
+    # Focus (vim-style)
+    alt-h = 'focus left'
+    alt-j = 'focus down'
+    alt-k = 'focus up'
+    alt-l = 'focus right'
+
+    # Move windows (vim-style)
+    alt-shift-h = 'move left'
+    alt-shift-j = 'move down'
+    alt-shift-k = 'move up'
+    alt-shift-l = 'move right'
+
+    # Resize
+    alt-minus = 'resize smart -50'
+    alt-equal = 'resize smart +50'
+
+    # --- Your workspaces ---
+    # alt-1 = Work1, alt-2 = Work2, alt-3 = Hobby1, alt-4 = Hobby2
+    alt-1 = 'workspace W1'
+    alt-2 = 'workspace W2'
+    alt-3 = 'workspace H1'
+    alt-4 = 'workspace H2'
+
+    # Move focused window to a workspace
+    alt-shift-1 = 'move-node-to-workspace W1'
+    alt-shift-2 = 'move-node-to-workspace W2'
+    alt-shift-3 = 'move-node-to-workspace H1'
+    alt-shift-4 = 'move-node-to-workspace H2'
+
+    # Quick toggle back to previous workspace
+    alt-tab = 'workspace-back-and-forth'
+
+    # Move workspace to another monitor (if you ever use an external display)
+    alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
+
+    # --- Hyper key launchers (Caps Lock + key) ---
+    # Hyper = Ctrl+Shift+Alt+Cmd (remapped from Caps Lock via Karabiner)
+    ctrl-alt-shift-cmd-c = '''exec-and-forget osascript -e '
+    tell application "Google Chrome" to make new window'
+    '''
+    ctrl-alt-shift-cmd-f = '''exec-and-forget osascript -e '
+    tell application "Firefox" to activate
+    tell application "System Events" to keystroke "n" using command down'
+    '''
+    ctrl-alt-shift-cmd-b = '''exec-and-forget osascript -e '
+    tell application "Brave Browser" to make new window'
+    '''
+    ctrl-alt-shift-cmd-i = '''exec-and-forget osascript -e '
+    tell application "iTerm" to create window with default profile'
+    '''
+    ctrl-alt-shift-cmd-s = '''exec-and-forget osascript -e '
+    tell application "Spotify" to activate'
+    '''
+    ctrl-alt-shift-cmd-u = '''exec-and-forget osascript -e '
+    tell application "Sublime Text" to activate
+    tell application "System Events" to keystroke "n" using command down'
+    '''
+    ctrl-alt-shift-cmd-o = '''exec-and-forget osascript -e '
+    tell application "Obsidian" to activate'
+    '''
+    ctrl-alt-shift-cmd-r = '''exec-and-forget osascript -e '
+    tell application "Cursor" to activate
+    tell application "System Events" to keystroke "n" using {shift down, command down}'
+    '''
+    ctrl-alt-shift-cmd-l = '''exec-and-forget osascript -e '
+    tell application "Slack" to activate'
+    '''
+
+    # Service mode
+    alt-shift-semicolon = 'mode service'
+
+[mode.service.binding]
+    esc = ['reload-config', 'mode main']
+    r = ['flatten-workspace-tree', 'mode main']
+    f = ['layout floating tiling', 'mode main']
+    backspace = ['close-all-windows-but-current', 'mode main']
