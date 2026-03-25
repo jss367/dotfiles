@@ -1570,12 +1570,33 @@
                         ]
                     },
                     {
-                        "description": "Caps Lock => Type email address",
+                        "description": "Caps Lock => Hyper (Ctrl+Shift+Alt+Cmd), tap alone => Escape",
                         "manipulators": [
                             {
                                 "from": {
                                     "key_code": "caps_lock",
                                     "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "left_shift",
+                                        "modifiers": ["left_command", "left_control", "left_option"]
+                                    }
+                                ],
+                                "to_if_alone": [{ "key_code": "escape" }],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Hyper+E => Type email address",
+                        "manipulators": [
+                            {
+                                "from": {
+                                    "key_code": "e",
+                                    "modifiers": {
+                                        "mandatory": ["command", "control", "option", "shift"]
+                                    }
                                 },
                                 "to": [
                                     {
