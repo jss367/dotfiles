@@ -51,3 +51,22 @@ _hsl_to_rgb() {
   _g=$(( g1000 * 255 / 1000 ))
   _b=$(( b1000 * 255 / 1000 ))
 }
+
+# Cross-platform md5
+if command -v md5 &>/dev/null; then
+  _tmux_hash() { md5 -qs "$1"; }
+else
+  _tmux_hash() { echo -n "$1" | md5sum | cut -c1-32; }
+fi
+
+# Project name -> hue via golden angle
+# Deterministic: same name = same hue, always
+_project_hue() {
+  local name=$1
+  local hash=$(_tmux_hash "$name")
+  # Take first 8 hex chars -> integer, multiply by golden angle (137.508 deg)
+  # We use 137508 and divide by 1000 to stay in integer math
+  local idx=$(( 16#${hash:0:8} ))
+  local hue=$(( (idx * 137508 / 1000) % 360 ))
+  echo $hue
+}
