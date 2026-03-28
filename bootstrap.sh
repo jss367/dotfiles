@@ -28,6 +28,32 @@ else
     success "iTerm2 already installed"
 fi
 
+# --- iTerm2 appearance ---
+ITERM_PLIST="$HOME/Library/Preferences/com.googlecode.iterm2.plist"
+if [[ -f "$ITERM_PLIST" ]]; then
+    info "Configuring iTerm2 dark theme, colors, and font..."
+    PB="/usr/libexec/PlistBuddy"
+    PROF=":New Bookmarks:0"
+
+    # Dark background
+    $PB -c "Set '${PROF}:Background Color:Red Component'   0.12" "$ITERM_PLIST"
+    $PB -c "Set '${PROF}:Background Color:Green Component' 0.12" "$ITERM_PLIST"
+    $PB -c "Set '${PROF}:Background Color:Blue Component'  0.14" "$ITERM_PLIST"
+
+    # Light foreground
+    $PB -c "Set '${PROF}:Foreground Color:Red Component'   0.85" "$ITERM_PLIST"
+    $PB -c "Set '${PROF}:Foreground Color:Green Component' 0.85" "$ITERM_PLIST"
+    $PB -c "Set '${PROF}:Foreground Color:Blue Component'  0.85" "$ITERM_PLIST"
+
+    # Font
+    $PB -c "Set '${PROF}:Normal Font' 'MesloLGS-NF-Regular 13'" "$ITERM_PLIST"
+
+    # Dark window chrome (1 = Dark)
+    defaults write com.googlecode.iterm2 TabStyleWithAutomaticOption -int 1
+else
+    warn "iTerm2 plist not found — open iTerm2 once, then re-run this script"
+fi
+
 # --- Oh My Zsh ---
 if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
     info "Installing Oh My Zsh..."
@@ -110,6 +136,14 @@ else
     success "Oh My Zsh bridge already exists"
 fi
 
+# --- AeroSpace ---
+if [[ ! -d "/Applications/AeroSpace.app" ]]; then
+    info "Installing AeroSpace..."
+    brew install --cask nikitabobko/tap/aerospace
+else
+    success "AeroSpace already installed"
+fi
+
 # --- Karabiner ---
 KARABINER_DIR="$HOME/.config/karabiner"
 if [[ -d "$DOTFILES_DIR/karabiner" ]]; then
@@ -120,5 +154,5 @@ fi
 
 echo ""
 success "Done! Open a new iTerm2 window to see everything in action."
-warn "Remember: set iTerm2 font to 'MesloLGS NF' size 13 in Preferences > Profiles > Text"
+info "iTerm2 is configured with dark theme, MesloLGS NF font, and preferences from dotfiles"
 warn "Remember: .zshrc is machine-specific — set ZSH_THEME=\"powerlevel10k/powerlevel10k\" and plugins=(git zsh-autosuggestions) manually"
