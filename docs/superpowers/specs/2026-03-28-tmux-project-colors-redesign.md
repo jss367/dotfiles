@@ -20,7 +20,7 @@ The current `tmux-project-colors.zsh` script hashes project names into RGB space
 
 The golden angle ensures that even arbitrary hash-derived integers produce hues that are maximally spread around the color wheel. The result is deterministic: "vireo" always produces the same color, on any machine, in any order.
 
-For pane borders, use the same hue and saturation but lower lightness (~35%) so the border is visible but not overwhelming.
+For pane borders, use the same hue and saturation but lower lightness (35%) so the border is visible but not overwhelming.
 
 ### What Gets Colored
 
@@ -28,7 +28,7 @@ For pane borders, use the same hue and saturation but lower lightness (~35%) so 
 |---|---|
 | **Status bar window tab** | Active window tab gets project color background + white text |
 | **Status bar (left/right)** | Stays default — only the window tab is colored |
-| **Active pane border** | Project color at lower lightness (~35%) |
+| **Active pane border** | Project color at lower lightness (35%) |
 | **Inactive pane borders** | Default/dim |
 | **Pane background** | Always default — no more tinted backgrounds |
 | **Window name** | Renamed to git project name; reverts to automatic when outside a git repo |
