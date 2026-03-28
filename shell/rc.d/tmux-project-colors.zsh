@@ -70,3 +70,39 @@ _project_hue() {
   local hue=$(( (idx * 137508 / 1000) % 360 ))
   echo $hue
 }
+
+_tmux_project_color() {
+  [[ -z "$TMUX" ]] && return
+
+  local project_dir
+  project_dir=$(git rev-parse --show-toplevel 2>/dev/null)
+
+  if [[ -z "$project_dir" ]]; then
+    # Not in a git repo — reset everything
+    tmux select-pane -P 'bg=default'
+    tmux set-window-option window-status-current-style 'default'
+    tmux set-option pane-active-border-style 'default'
+    tmux set-window-option automatic-rename on
+    return
+  fi
+
+  local project_name="${project_dir:t}"
+  local hue=$(_project_hue "$project_name")
+
+  # Status bar tab: S=70, L=50 (vivid)
+  _hsl_to_rgb $hue 70 50
+  local tab_color=$(printf '#%02x%02x%02x' $_r $_g $_b)
+
+  # Pane border: S=70, L=35 (subdued)
+  _hsl_to_rgb $hue 70 35
+  local border_color=$(printf '#%02x%02x%02x' $_r $_g $_b)
+
+  # Apply styles
+  tmux select-pane -P 'bg=default'
+  tmux set-window-option window-status-current-style "bg=${tab_color},fg=#ffffff"
+  tmux set-option pane-active-border-style "fg=${border_color}"
+  tmux rename-window "$project_name"
+}
+
+add-zsh-hook chpwd _tmux_project_color
+_tmux_project_color  # run on shell start
