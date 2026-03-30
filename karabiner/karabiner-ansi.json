@@ -1423,7 +1423,7 @@
                                 },
                                 "to": [
                                     {
-                                        "shell_command": "/opt/homebrew/bin/aerospace focus app-next"
+                                        "shell_command": "/Users/julius/git/airlock/.build/arm64-apple-macosx/debug/airlock focus app-next"
                                     }
                                 ]
                             },
@@ -1443,7 +1443,7 @@
                                 },
                                 "to": [
                                     {
-                                        "shell_command": "/opt/homebrew/bin/aerospace focus app-prev"
+                                        "shell_command": "/Users/julius/git/airlock/.build/arm64-apple-macosx/debug/airlock focus app-prev"
                                     }
                                 ]
                             }
@@ -1467,7 +1467,7 @@
                                 },
                                 "to": [
                                     {
-                                        "shell_command": "/opt/homebrew/bin/aerospace focus same-app-next"
+                                        "shell_command": "/Users/julius/git/airlock/.build/arm64-apple-macosx/debug/airlock focus same-app-next"
                                     }
                                 ]
                             },
@@ -1487,7 +1487,7 @@
                                 },
                                 "to": [
                                     {
-                                        "shell_command": "/opt/homebrew/bin/aerospace focus same-app-prev"
+                                        "shell_command": "/Users/julius/git/airlock/.build/arm64-apple-macosx/debug/airlock focus same-app-prev"
                                     }
                                 ]
                             }
