@@ -27,5 +27,16 @@ The script is idempotent — safe to re-run on an already-configured machine.
 
 ## Design Decisions
 
-I don't symlink `.zshrc` because too many tools (conda, nvm, etc.) modify it during installation, which breaks symlinks or pollutes the repo with machine-specific paths. I use that one for any machine-specific stuff. All the portable config lives in `.profile` instead.
+I don't symlink `.zshrc` because too many tools (conda, nvm, etc.) modify it during installation, which breaks symlinks or pollutes the repo with machine-specific paths. I use that one for any machine-specific stuff. Portable config lives in two places:
+- **`.profile`** — environment variables and shell-agnostic config (symlinked)
+- **`shell/rc.d/*.zsh`** — zsh-specific functions and hooks (sourced by `.zshrc`)
+
+Add this line to `.zshrc` to source the portable scripts:
+```zsh
+for f in ~/git/dotfiles/shell/rc.d/*.zsh(N); do source "$f"; done
+```
+
+### Included rc.d scripts
+
+- **`tmux-project-colors.zsh`** — auto-tints tmux pane backgrounds and status bar per git project. Cross-platform (macOS + Linux).
 

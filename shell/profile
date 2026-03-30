@@ -72,6 +72,7 @@ alias ji='zi'
 alias cv='claude' # with vim keybindings
 alias cvd='claude --dangerously-skip-permissions'
 alias cvr='claude --resume'
+alias cdx='codex --dangerously-bypass-approvals-and-sandbox'
 
 alias snas='ssh julius_admin@192.168.4.75'
 

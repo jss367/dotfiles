@@ -80,6 +80,7 @@ _tmux_project_color() {
   if [[ -z "$project_dir" ]]; then
     # Not in a git repo — reset everything
     tmux select-pane -P 'bg=default'
+    tmux set status-style 'default'
     tmux set-window-option window-status-current-style 'default'
     tmux set-option pane-active-border-style 'default'
     tmux set-window-option automatic-rename on
@@ -99,6 +100,7 @@ _tmux_project_color() {
 
   # Apply styles
   tmux select-pane -P 'bg=default'
+  tmux set status-style "bg=${border_color},fg=#ffffff"
   tmux set-window-option window-status-current-style "bg=${tab_color},fg=#ffffff"
   tmux set-option pane-active-border-style "fg=${border_color}"
   tmux rename-window "$project_name"
