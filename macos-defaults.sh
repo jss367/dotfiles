@@ -71,6 +71,12 @@ mkdir -p "$HOME/Screenshots"
 defaults write com.apple.screencapture location -string "$HOME/Screenshots"
 
 # ──────────────────────────────────────────────
+# Chrome
+# ──────────────────────────────────────────────
+# Disable Gemini integration and its global keyboard shortcut (Ctrl+G)
+defaults write com.google.Chrome GeminiSettings -integer 1
+
+# ──────────────────────────────────────────────
 # Restart affected apps
 # ──────────────────────────────────────────────
 info "Restarting Dock and Finder..."
