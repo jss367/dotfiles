@@ -114,6 +114,43 @@ else
     success "Claude Code already installed"
 fi
 
+# --- Linux GUI apps (Flatpak) ---
+if [[ "$(uname)" == "Linux" ]]; then
+    if ! command -v flatpak &>/dev/null; then
+        warn "Flatpak not found — install it via your distro's package manager, then re-run"
+    else
+        info "Installing Linux GUI apps via Flatpak..."
+        flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+        flatpak install -y flathub \
+            com.visualstudio.code \
+            org.sublimetext.three \
+            md.obsidian.Obsidian \
+            org.libreoffice.LibreOffice \
+            com.google.Chrome \
+            com.brave.Browser \
+            org.mozilla.firefox \
+            org.doublecmd.DoubleCommander
+    fi
+
+    # --- Kitty terminal ---
+    if ! command -v kitty &>/dev/null; then
+        info "Installing Kitty..."
+        curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
+    else
+        success "Kitty already installed"
+    fi
+
+    # --- Miniconda ---
+    if [[ ! -d "$HOME/miniconda3" ]]; then
+        info "Installing Miniconda..."
+        curl -fsSL -o /tmp/miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+        bash /tmp/miniconda.sh -b -p "$HOME/miniconda3"
+        rm /tmp/miniconda.sh
+    else
+        success "Miniconda already installed"
+    fi
+fi
+
 # --- Symlinks ---
 info "Setting up symlinks..."
 ln -sf "$DOTFILES_DIR/shell/profile" "$HOME/.profile"
