@@ -28,7 +28,7 @@ defaults write NSGlobalDomain NSAutomaticCapitalizationEnabled -bool false
 # Trackpad
 # ──────────────────────────────────────────────
 # Faster tracking speed (default ~1.0, max via UI is 3.0)
-defaults write NSGlobalDomain com.apple.trackpad.scaling -float 2.5
+defaults write NSGlobalDomain com.apple.trackpad.scaling -float 1.5
 
 # Tap to click
 defaults write com.apple.AppleMultitouchTrackpad Clicking -bool true
