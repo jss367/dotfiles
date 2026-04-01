@@ -40,4 +40,6 @@ ln -s ~/git/dotfiles/karabiner/karabiner-ansi.json ~/.config/karabiner/karabiner
 | 26 | Delete | Cmd+Backspace (Delete) | Finder only |
 | 27 | Backspace | Cmd+Up (Go up) | Finder only |
 | 28 | Ctrl+Click | Cmd+Click (Multi-select) | Global |
-| 29 | Caps Lock | Type email address | Global |
+| 29 | Caps Lock (hold) | Hyper key (Ctrl+Shift+Alt+Cmd) | Global |
+| 29 | Caps Lock (tap) | Escape | Global |
+| 30 | Hyper+E | Type email address | Global |
