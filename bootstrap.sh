@@ -173,14 +173,6 @@ else
     success "Oh My Zsh bridge already exists"
 fi
 
-# --- AeroSpace ---
-if [[ ! -d "/Applications/AeroSpace.app" ]]; then
-    info "Installing AeroSpace..."
-    brew install --cask nikitabobko/tap/aerospace
-else
-    success "AeroSpace already installed"
-fi
-
 # --- Karabiner ---
 KARABINER_DIR="$HOME/.config/karabiner"
 if [[ -d "$DOTFILES_DIR/karabiner" ]]; then
