@@ -1895,6 +1895,30 @@
                         ]
                     },
                     {
+                        "description": "Hyper+Q => Type PR review nudge",
+                        "manipulators": [
+                            {
+                                "from": {
+                                    "key_code": "q",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "command",
+                                            "control",
+                                            "option",
+                                            "shift"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "shell_command": "osascript -e 'tell application \"System Events\" to keystroke \"Will you address any comment(s) or merge conflict(s) on this PR?\"'"
+                                    }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
                         "description": "Ctrl+Left Click => Cmd+Left Click (select multiple items)",
                         "manipulators": [
                             {
