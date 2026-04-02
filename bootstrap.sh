@@ -189,6 +189,10 @@ if [[ -d "$DOTFILES_DIR/karabiner" ]]; then
     ln -sf "$DOTFILES_DIR/karabiner" "$KARABINER_DIR"
 fi
 
+# --- macOS defaults ---
+info "Applying macOS defaults..."
+bash "$DOTFILES_DIR/macos-defaults.sh"
+
 # --- Patch .zshrc ---
 ZSHRC="$HOME/.zshrc"
 if [[ -f "$ZSHRC" ]]; then
