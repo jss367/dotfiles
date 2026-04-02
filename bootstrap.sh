@@ -186,7 +186,7 @@ KARABINER_DIR="$HOME/.config/karabiner"
 if [[ -d "$DOTFILES_DIR/karabiner" ]]; then
     info "Linking Karabiner config..."
     mkdir -p "$HOME/.config"
-    ln -sf "$DOTFILES_DIR/karabiner" "$KARABINER_DIR"
+    ln -sfn "$DOTFILES_DIR/karabiner" "$KARABINER_DIR"
 fi
 
 # --- macOS defaults ---
