@@ -16,6 +16,13 @@ else
     success "Homebrew already installed"
 fi
 
+# Persist Homebrew in .zprofile
+if ! grep -qF 'brew shellenv' "$HOME/.zprofile" 2>/dev/null; then
+    info "Adding Homebrew to .zprofile..."
+    echo >> "$HOME/.zprofile"
+    echo 'eval "$(/opt/homebrew/bin/brew shellenv zsh)"' >> "$HOME/.zprofile"
+fi
+
 # --- Brew packages ---
 info "Installing brew packages..."
 brew install --quiet zoxide fzf zsh-syntax-highlighting
@@ -29,30 +36,39 @@ else
 fi
 
 # --- iTerm2 appearance ---
-ITERM_PLIST="$HOME/Library/Preferences/com.googlecode.iterm2.plist"
-if [[ -f "$ITERM_PLIST" ]]; then
-    info "Configuring iTerm2 dark theme, colors, and font..."
-    PB="/usr/libexec/PlistBuddy"
-    PROF=":New Bookmarks:0"
+info "Configuring iTerm2 dark theme, colors, and font..."
 
-    # Dark background
-    $PB -c "Set '${PROF}:Background Color:Red Component'   0.12" "$ITERM_PLIST"
-    $PB -c "Set '${PROF}:Background Color:Green Component' 0.12" "$ITERM_PLIST"
-    $PB -c "Set '${PROF}:Background Color:Blue Component'  0.14" "$ITERM_PLIST"
+# Dark window chrome (1 = Dark)
+defaults write com.googlecode.iterm2 TabStyleWithAutomaticOption -int 1
 
-    # Light foreground
-    $PB -c "Set '${PROF}:Foreground Color:Red Component'   0.85" "$ITERM_PLIST"
-    $PB -c "Set '${PROF}:Foreground Color:Green Component' 0.85" "$ITERM_PLIST"
-    $PB -c "Set '${PROF}:Foreground Color:Blue Component'  0.85" "$ITERM_PLIST"
+# Use a Dynamic Profile — iTerm2 picks these up automatically, no plist hacking needed
+DYNAMIC_DIR="$HOME/Library/Application Support/iTerm2/DynamicProfiles"
+mkdir -p "$DYNAMIC_DIR"
+cat > "$DYNAMIC_DIR/dotfiles.json" << 'EOF'
+{
+    "Profiles": [{
+        "Name": "Default",
+        "Guid": "dotfiles-dark-profile",
+        "Dynamic Profile Parent Name": "Default",
+        "Background Color": {
+            "Color Space": "sRGB",
+            "Red Component": 0.12,
+            "Green Component": 0.12,
+            "Blue Component": 0.14
+        },
+        "Foreground Color": {
+            "Color Space": "sRGB",
+            "Red Component": 0.85,
+            "Green Component": 0.85,
+            "Blue Component": 0.85
+        },
+        "Normal Font": "MesloLGS-NF-Regular 13"
+    }]
+}
+EOF
 
-    # Font
-    $PB -c "Set '${PROF}:Normal Font' 'MesloLGS-NF-Regular 13'" "$ITERM_PLIST"
-
-    # Dark window chrome (1 = Dark)
-    defaults write com.googlecode.iterm2 TabStyleWithAutomaticOption -int 1
-else
-    warn "iTerm2 plist not found — open iTerm2 once, then re-run this script"
-fi
+# Note: don't override Default Bookmark Guid — let iTerm2 manage it.
+# The dynamic profile inherits from "Default" and iTerm2 picks it up on restart.
 
 # --- Oh My Zsh ---
 if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
@@ -201,6 +217,12 @@ if [[ -f "$ZSHRC" ]]; then
     if ! grep -qF 'rc.d/*.zsh' "$ZSHRC"; then
         info "Adding rc.d sourcing to .zshrc..."
         printf '\n# Source portable dotfiles scripts\n%s\n' "$RC_D_LINE" >> "$ZSHRC"
+    fi
+
+    # Source p10k config to suppress the configuration wizard
+    if ! grep -qF 'p10k.zsh' "$ZSHRC"; then
+        info "Adding p10k.zsh sourcing to .zshrc..."
+        printf '\n# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh\n[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh\n' >> "$ZSHRC"
     fi
 fi
 
