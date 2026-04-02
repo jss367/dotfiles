@@ -23,4 +23,5 @@ if OS.mac?
   cask "firefox"
   cask "docker"
   cask "anaconda"
+  cask "karabiner-elements"
 end
