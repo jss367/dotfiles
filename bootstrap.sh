@@ -25,15 +25,7 @@ fi
 
 # --- Brew packages ---
 info "Installing brew packages..."
-brew install --quiet zoxide fzf zsh-syntax-highlighting
-
-# --- iTerm2 ---
-if [[ ! -d "/Applications/iTerm.app" ]]; then
-    info "Installing iTerm2..."
-    brew install --cask iterm2
-else
-    success "iTerm2 already installed"
-fi
+brew bundle --file="$DOTFILES_DIR/Brewfile"
 
 # --- iTerm2 appearance ---
 info "Configuring iTerm2 dark theme, colors, and font..."
