@@ -121,6 +121,9 @@ include() {
     [[ -f "$1" ]] && source "$1"
 }
 
+# Local binaries (Claude Code, etc.)
+export PATH="$HOME/.local/bin:$PATH"
+
 # Allow sublime text to be opened from command line with `subl`
 [[ $_OS == "mac" ]] && export PATH="/Applications/Sublime Text.app/Contents/SharedSupport/bin:$PATH"
 
@@ -138,6 +141,9 @@ fi
 if [[ $_OS == "mac" ]] && [[ -d "${HOMEBREW_PREFIX:-/opt/homebrew}" ]]; then
     eval "$("${HOMEBREW_PREFIX:-/opt/homebrew}/bin/brew" shellenv)"
 fi
+
+# zoxide (smart cd)
+command -v zoxide &>/dev/null && eval "$(zoxide init zsh)"
 
 include "$HOME/.credentials" # Add passwords and other credentials
 include "$HOME/.work_profile" # Add other work-specific modifications
