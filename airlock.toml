@@ -1,0 +1,120 @@
+# AeroSpace config for workspace-based task separation
+config-version = 2
+
+# Start AeroSpace at login
+start-at-login = true
+
+# Normalization
+enable-normalization-flatten-containers = true
+enable-normalization-opposite-orientation-for-nested-containers = true
+
+accordion-padding = 30
+default-root-container-layout = 'tiles'
+default-root-container-orientation = 'auto'
+
+on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+
+# Keep your named workspaces alive even when empty
+persistent-workspaces = ['Main', 'SPAR', 'Airlock', 'H2']
+
+# Make all windows floating by default (no auto-tiling)
+[[on-window-detected]]
+    check-further-callbacks = true
+    run = 'layout floating'
+
+[key-mapping]
+    preset = 'qwerty'
+
+[gaps]
+    inner.horizontal = 8
+    inner.vertical   = 8
+    outer.left       = 8
+    outer.bottom     = 8
+    outer.top        = 8
+    outer.right      = 8
+
+[mode.main.binding]
+    # Layout controls
+    option-slash = 'layout tiles horizontal vertical'
+    option-comma = 'layout accordion horizontal vertical'
+
+    # Cycle through windows on current workspace
+    cmd-backtick = 'focus --boundaries-action wrap-around-the-workspace dfs-next'
+    cmd-shift-backtick = 'focus --boundaries-action wrap-around-the-workspace dfs-prev'
+
+    # Focus (vim-style)
+    option-h = 'focus left'
+    option-j = 'focus down'
+    option-k = 'focus up'
+    option-l = 'focus right'
+
+    # Move windows (vim-style)
+    option-shift-h = 'move left'
+    option-shift-j = 'move down'
+    option-shift-k = 'move up'
+    option-shift-l = 'move right'
+
+    # Resize
+    option-minus = 'resize smart -50'
+    option-equal = 'resize smart +50'
+
+    # --- Your workspaces ---
+    # option-1 = Work1, option-2 = Work2, option-3 = Hobby1, option-4 = Hobby2
+    option-1 = 'workspace Main'
+    option-2 = 'workspace SPAR'
+    option-3 = 'workspace Airlock'
+    option-4 = 'workspace H2'
+
+    # Move focused window to a workspace
+    option-shift-1 = 'move-node-to-workspace Main'
+    option-shift-2 = 'move-node-to-workspace SPAR'
+    option-shift-3 = 'move-node-to-workspace Airlock'
+    option-shift-4 = 'move-node-to-workspace H2'
+
+    # Quick toggle back to previous workspace
+    option-tab = 'workspace-back-and-forth'
+
+    # Move workspace to another monitor (if you ever use an external display)
+    option-shift-tab = 'move-workspace-to-monitor --wrap-around next'
+
+    # --- Hyper key launchers (Caps Lock + key) ---
+    # Hyper = Ctrl+Shift+Alt+Cmd (remapped from Caps Lock via Karabiner)
+    ctrl-option-shift-cmd-c = '''exec-and-forget osascript -e '
+    tell application "Google Chrome" to make new window'
+    '''
+    ctrl-option-shift-cmd-f = '''exec-and-forget osascript -e '
+    tell application "Firefox" to activate
+    tell application "System Events" to keystroke "n" using command down'
+    '''
+    ctrl-option-shift-cmd-b = '''exec-and-forget osascript -e '
+    tell application "Brave Browser" to make new window'
+    '''
+    ctrl-option-shift-cmd-i = '''exec-and-forget osascript -e '
+    tell application "iTerm" to create window with default profile'
+    '''
+    ctrl-option-shift-cmd-s = '''exec-and-forget osascript -e '
+    tell application "Spotify" to activate'
+    '''
+    ctrl-option-shift-cmd-u = '''exec-and-forget osascript -e '
+    tell application "Sublime Text" to activate
+    tell application "System Events" to keystroke "n" using command down'
+    '''
+    ctrl-option-shift-cmd-o = '''exec-and-forget osascript -e '
+    tell application "Obsidian" to activate'
+    '''
+    ctrl-option-shift-cmd-r = '''exec-and-forget osascript -e '
+    tell application "Cursor" to activate
+    tell application "System Events" to keystroke "n" using {shift down, command down}'
+    '''
+    ctrl-option-shift-cmd-l = '''exec-and-forget osascript -e '
+    tell application "Slack" to activate'
+    '''
+
+    # Service mode
+    option-shift-semicolon = 'mode service'
+
+[mode.service.binding]
+    esc = ['reload-config', 'mode main']
+    r = ['flatten-workspace-tree', 'mode main']
+    f = ['layout floating tiling', 'mode main']
+    backspace = ['close-all-windows-but-current', 'mode main']
