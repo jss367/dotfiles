@@ -181,8 +181,29 @@ if [[ -d "$DOTFILES_DIR/karabiner" ]]; then
     ln -sf "$DOTFILES_DIR/karabiner" "$KARABINER_DIR"
 fi
 
+# --- Patch .zshrc ---
+ZSHRC="$HOME/.zshrc"
+if [[ -f "$ZSHRC" ]]; then
+    # Set theme to powerlevel10k
+    if grep -q 'ZSH_THEME="robbyrussell"' "$ZSHRC"; then
+        info "Setting ZSH_THEME to powerlevel10k..."
+        sed -i '' 's/ZSH_THEME="robbyrussell"/ZSH_THEME="powerlevel10k\/powerlevel10k"/' "$ZSHRC"
+    fi
+
+    # Set plugins
+    if grep -q 'plugins=(git)' "$ZSHRC"; then
+        info "Setting plugins to (git zsh-autosuggestions)..."
+        sed -i '' 's/plugins=(git)/plugins=(git zsh-autosuggestions)/' "$ZSHRC"
+    fi
+
+    # Source rc.d scripts
+    RC_D_LINE='for f in ~/git/dotfiles/shell/rc.d/*.zsh(N); do source "$f"; done'
+    if ! grep -qF 'rc.d/*.zsh' "$ZSHRC"; then
+        info "Adding rc.d sourcing to .zshrc..."
+        printf '\n# Source portable dotfiles scripts\n%s\n' "$RC_D_LINE" >> "$ZSHRC"
+    fi
+fi
+
 echo ""
 success "Done! Open a new iTerm2 window to see everything in action."
 info "iTerm2 is configured with dark theme, MesloLGS NF font, and preferences from dotfiles"
-warn "Remember: .zshrc is machine-specific — set ZSH_THEME=\"powerlevel10k/powerlevel10k\" and plugins=(git zsh-autosuggestions) manually"
-warn "Remember: add 'for f in ~/git/dotfiles/shell/rc.d/*.zsh(N); do source \"\$f\"; done' to .zshrc for portable shell scripts"
