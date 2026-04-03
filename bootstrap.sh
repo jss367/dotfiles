@@ -163,6 +163,11 @@ fi
 info "Setting up symlinks..."
 ln -sf "$DOTFILES_DIR/shell/profile" "$HOME/.profile"
 ln -sf "$DOTFILES_DIR/git/gitconfig" "$HOME/.gitconfig"
+if [[ "$(uname)" == "Darwin" ]]; then
+    ln -sf "$DOTFILES_DIR/git/gitconfig-local-macos" "$HOME/.gitconfig-local"
+else
+    ln -sf "$DOTFILES_DIR/git/gitconfig-local-linux" "$HOME/.gitconfig-local"
+fi
 
 # --- p10k config ---
 if [[ ! -f "$HOME/.p10k.zsh" ]]; then
