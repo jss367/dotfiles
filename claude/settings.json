@@ -1,0 +1,10 @@
+{
+  "enabledPlugins": {
+    "superpowers@superpowers-marketplace": true,
+    "rust-analyzer-lsp@claude-plugins-official": true
+  },
+  "effortLevel": "high",
+  "voiceEnabled": true,
+  "skipDangerousModePermissionPrompt": true,
+  "editorMode": "vim"
+}
