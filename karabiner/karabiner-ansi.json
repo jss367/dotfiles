@@ -1909,7 +1909,7 @@
                                         ]
                                     }
                                 },
-                                "to": [
+                                "to_after_key_up": [
                                     {
                                         "shell_command": "osascript -e 'tell application \"System Events\" to keystroke \"Will you address any comment(s) or merge conflict(s) on this PR?\"'"
                                     }
