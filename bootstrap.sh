@@ -193,6 +193,16 @@ ln -sf "$DOTFILES_DIR/claude/CLAUDE.md" "$HOME/.claude/CLAUDE.md"
 ln -sf "$DOTFILES_DIR/claude/settings.json" "$HOME/.claude/settings.json"
 ln -sf "$DOTFILES_DIR/claude/settings.local.json" "$HOME/.claude/settings.local.json"
 
+# --- VS Code & Cursor ---
+info "Linking VS Code and Cursor config..."
+VSCODE_USER_DIR="$HOME/Library/Application Support/Code/User"
+CURSOR_USER_DIR="$HOME/Library/Application Support/Cursor/User"
+mkdir -p "$VSCODE_USER_DIR" "$CURSOR_USER_DIR"
+ln -sf "$DOTFILES_DIR/vscode/settings.json" "$VSCODE_USER_DIR/settings.json"
+ln -sf "$DOTFILES_DIR/vscode/keybindings.json" "$VSCODE_USER_DIR/keybindings.json"
+ln -sf "$DOTFILES_DIR/vscode/settings.json" "$CURSOR_USER_DIR/settings.json"
+ln -sf "$DOTFILES_DIR/vscode/keybindings.json" "$CURSOR_USER_DIR/keybindings.json"
+
 # --- Karabiner ---
 KARABINER_DIR="$HOME/.config/karabiner"
 if [[ -d "$DOTFILES_DIR/karabiner" ]]; then
