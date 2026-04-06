@@ -189,6 +189,7 @@ fi
 # --- Claude Code ---
 info "Linking Claude Code config..."
 mkdir -p "$HOME/.claude"
+ln -sf "$DOTFILES_DIR/claude/CLAUDE.md" "$HOME/.claude/CLAUDE.md"
 ln -sf "$DOTFILES_DIR/claude/settings.json" "$HOME/.claude/settings.json"
 ln -sf "$DOTFILES_DIR/claude/settings.local.json" "$HOME/.claude/settings.local.json"
 
