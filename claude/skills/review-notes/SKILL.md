@@ -7,7 +7,7 @@ description: Use when user wants to review, clean, triage, or organize Obsidian 
 
 ## Overview
 
-Interactive note-management pipeline: pull Granola meetings, find loose notes, collaboratively triage/rename/clean/file them, and surface key items for overview docs.
+Interactive note-management pipeline: pull Granola meetings, find loose notes, collaboratively triage/rename/clean/file them, and surface key items into the right docs.
 
 **Core principle:** Collaborative and curious, not presumptuous. Always show reasoning, always ask. "I see X, I think Y — does that sound right?"
 
@@ -24,6 +24,51 @@ Interactive note-management pipeline: pull Granola meetings, find loose notes, c
 - **Granola:** Use `granola` CLI (installed globally via npm as `granola-cli`)
 - **Sensitive content:** Flag notes containing credentials, backup codes, API keys and suggest moving to `Keep/`. No need to hide contents — this is a personal tool.
 
+## Vault Conventions
+
+Project and company folders follow a standard structure. Learn this so you don't invent structures that don't fit.
+
+```
+Career/<Company>/
+  <Company> Overview.md    ← High-level overview only — keep it lean
+  TODO.md                  ← Live TODO list (separate from overview)
+  How We Work.md           ← Topic-specific doc
+  Alignment Research/      ← Topic-specific subfolder
+    Gradient Routing.md    ← One doc per topic (e.g. Emergent Misalignment.md, Acausal Trade.md)
+  People/
+    <Name>.md              ← Individual doc for frequent/important contacts
+    Assorted.md            ← SINGLE FILE with one-liners for minor contacts
+  Meetings/
+    Raw/                   ← Raw transcripts
+    YYYY-MM-DD-<title>.md  ← Cleaned meeting notes
+
+Projects/<Project>/
+  <Project> Overview.md
+  TODO.md
+  People/
+    Assorted.md
+  Meetings/
+    Raw/
+```
+
+**Overview docs** (`* Overview.md`):
+- Named `<Name> Overview.md` to make the purpose obvious
+- High-level only: description, key info, people links, meeting links
+- Do NOT put TODOs here — those belong in `TODO.md`
+- Do NOT add every detail — keep it lean and scannable
+
+**`People/` folder:**
+- Individual `.md` files for people you interact with regularly
+- `Assorted.md` — a **single flat file** with one-liner entries for minor contacts. This is a FILE, not a folder. Do not create `People/Assorted/` as a directory.
+
+**`TODO.md`:**
+- Live action item list per project/company, separate from the overview doc
+- When surfacing TODOs from a meeting, they go here — not in the overview doc
+
+**Topic folders** (e.g. `Alignment Research/`):
+- Created when a topic is substantial enough to warrant multiple docs
+- Each doc covers a specific topic (e.g. `Gradient Routing.md`, `Emergent Misalignment.md`, `Notes.md` for misc)
+
 ## Pipeline
 
 ### Phase 1: Pull from Granola
@@ -36,7 +81,6 @@ Interactive note-management pipeline: pull Granola meetings, find loose notes, c
    - Create cleaned version at `Meetings/YYYY-MM-DD-<title>.md` using the cleaned note template
    - Skip meetings with empty transcripts (failed recordings)
 4. Report: "Pulled N new meetings: [list]"
-5. Check the meeting-to-project filing table in `Where Things Go.md` — copy meetings to their project folders as specified
 
 ### Phase 2: Find Loose Notes
 
@@ -71,7 +115,7 @@ For each confirmed note:
 1. Move raw note to `<destination>/Raw/YYYY-MM-DD-<original-name>.md`
 2. Write cleaned version to `<destination>/YYYY-MM-DD-<clean-name>.md`
 3. Create destination folder and `Raw/` subfolder if they don't exist
-4. **One-liners and short notes → merge, don't standalone.** If a note is too short for the full template, propose merging it into an existing overview or TODO doc rather than creating a separate cleaned note.
+4. **One-liners and short notes → merge, don't standalone.** If a note is too short for the full template, propose merging it into an existing doc rather than creating a separate cleaned note.
 5. **Related notes → merge.** If multiple loose notes cover the same topic, combine them into one cleaned note.
 
 **Cleaned note template:**
@@ -96,29 +140,45 @@ Omit empty sections rather than leaving them blank.
 
 ### Phase 4: Surface & Propose
 
-Scan all newly processed notes for actionable items:
+This is the most important phase. After filing meetings and notes, read through each one and ask: does anything here need to be added to an existing doc?
 
-- **TODOs** — action items, follow-ups, tasks
-- **Decisions** — things decided or agreed on
-- **Key facts** — important info worth persisting (deadlines, tool names, processes, people)
+Scan for these categories:
 
-For each item, propose where it goes:
+**TODOs** — any action items, follow-ups, tasks
+→ Add to `TODO.md` for the relevant project/company
+→ For TODOs from meetings more than a few days old, ask "Any of these already done?" before adding
+
+**People** — any new person mentioned
+→ Frequent/important contact: propose creating an individual doc in `People/`
+→ Minor contact (met once, unlikely to need a full doc): propose adding a one-liner to `People/Assorted.md`
+
+**Key info** — tools, processes, facts worth persisting (deadlines, org structure, workflows)
+→ Add to the `* Overview.md` Key Info section — but keep it lean, one bullet per fact
+
+**Topic-specific content** — anything substantive about a recurring topic
+→ Alignment ideas/research: find the most relevant doc in `Alignment Research/` or propose creating a new one for the specific topic (e.g. `Emergent Misalignment.md`, `Gradient Routing.md`)
+→ Process/methodology notes: `How We Work.md` or similar
+→ Do NOT dump topic content into the overview doc
+
+Present proposals explicitly before writing anything:
 
 ```
-From "Onboarding Convo" (Career/AE Studio/):
-  TODO: Reach out to Bre about insurance
-  -> Add to Career/AE Studio/TODO.md? [y/n/elsewhere]
+From "Core Values" (Apr 6):
 
-  Key fact: Harvest used for time tracking
-  -> Add to Career/AE Studio/AE Studio.md Key Info? [y/n/elsewhere]
+  TODO: Look up Pygmalion effect study
+  → Add to Career/AE Studio/TODO.md? [y/n]
+
+  New person: Fernando (senior data scientist, 4-month-old son)
+  → Minor contact — add one-liner to People/Assorted.md? [y/n]
+
+  Key info: Co-publishing Gradient Routing paper with Anthropic next month
+  → Add to AE Studio Overview.md Key Info? [y/n]
+
+  Alignment content: working definition of alignment, Galileo example, hardware invariance idea
+  → Add to Alignment Research/Notes.md? Or create a new doc? [y/n/specify]
 ```
 
-**Behaviors:**
-- **TODOs go to TODO docs.** Each project/company can have a live `TODO.md`. Prefer appending TODOs there rather than only embedding in overview docs.
-- **Stale TODOs from older meetings:** When surfacing TODOs from meetings more than a few days old, ask "Any of these already done?" before adding them.
-- If overview doc exists, read it first and match its existing format when appending
-- If overview doc doesn't exist, ask: "No overview doc for X yet. Create one?"
-- Use this default template for new overview docs:
+**If an overview doc doesn't exist yet**, ask: "No overview doc for X yet. Create one?" Use this template:
 
 ```markdown
 # Title
@@ -126,13 +186,13 @@ From "Onboarding Convo" (Career/AE Studio/):
 ## Overview
 Brief description.
 
-## TODOs
-- [ ] ...
-
-## Decisions
+## Key Info
 - ...
 
-## Key Info
+## People
+- ...
+
+## Meetings
 - ...
 ```
 
@@ -140,16 +200,19 @@ Brief description.
 
 - Touch notes already filed in subfolders
 - Reorganize existing folder structure
-- Edit overview docs without explicit approval
+- Edit any doc without explicit approval
 - Delete anything
 
 ## Common Mistakes
 
 - **Being presumptuous** — Always ask before filing, renaming, or editing. Present reasoning.
 - **Hardcoding folder rules** — Read `Where Things Go.md` each run. It may change.
-- **Ignoring existing format** — When appending to an overview doc, match what's already there.
-- **Keeping vague filenames** — Default to suggesting a descriptive rename. "Rafael.md" → "Onboarding Convo.md".
-- **Creating standalone notes for one-liners** — Short notes should be merged into an existing doc (overview, TODO, etc.).
+- **Ignoring existing format** — When appending to a doc, match what's already there.
+- **Keeping vague filenames** — Default to suggesting a descriptive rename.
+- **Creating standalone notes for one-liners** — Short notes should be merged into an existing doc.
 - **Missing merge opportunities** — Multiple loose notes about the same topic should be combined.
-- **Missing folder conflicts** — A file named `Foo.md` next to a folder `Foo/` should be moved inside the folder with a descriptive rename.
+- **Missing folder conflicts** — A file named `Foo.md` next to a folder `Foo/` should be moved inside with a descriptive rename.
 - **Adding stale TODOs without checking** — Old meeting TODOs may already be done. Ask first.
+- **Creating `People/Assorted/` as a folder** — Assorted is a single flat file (`People/Assorted.md`), not a directory.
+- **Putting TODOs in the overview doc** — TODOs go in `TODO.md`, not in `* Overview.md`.
+- **Overloading the overview doc** — Overview docs are high-level. Topic-specific content belongs in its own doc or folder.
