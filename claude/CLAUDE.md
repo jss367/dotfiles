@@ -4,6 +4,7 @@
 
 - **Never commit to `main` directly.** All work happens on feature branches.
 - All feature work MUST be done in a **git worktree**. This keeps the main checkout clean and runnable. Use `isolation: "worktree"` when dispatching subagents.
+- **Never read or write files in the main checkout when doing feature work.** All edits must go to the worktree path only. The main checkout must remain unmodified at all times.
 - Branch naming: `claude/<short-description>`.
 
 ## Development cycle
