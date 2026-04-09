@@ -192,6 +192,7 @@ mkdir -p "$HOME/.claude"
 ln -sf "$DOTFILES_DIR/claude/CLAUDE.md" "$HOME/.claude/CLAUDE.md"
 ln -sf "$DOTFILES_DIR/claude/settings.json" "$HOME/.claude/settings.json"
 ln -sf "$DOTFILES_DIR/claude/settings.local.json" "$HOME/.claude/settings.local.json"
+ln -sfn "$DOTFILES_DIR/claude/skills" "$HOME/.claude/skills"
 
 # --- VS Code & Cursor ---
 info "Linking VS Code and Cursor config..."
