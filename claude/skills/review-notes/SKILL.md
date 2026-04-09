@@ -104,6 +104,7 @@ Found 6 loose notes:
 **Key behaviors:**
 - **Default to suggesting a descriptive rename.** Most loose notes have vague or misleading names. Suggest what the note is actually about.
 - **Infer date from filesystem metadata.** For loose notes without a date in the content, use `stat -f %SB` (macOS) to get the file's creation date. Present this to the user: "This file was created on March 12 — use that as the note date?" The user confirms or corrects before the date is used in filenames or the cleaned note header.
+- **Always ask for missing context before filing.** Don't just move a note as-is — ask if there's anything the user wants to add first. Especially useful for: events (date, location, link), people notes (role, context), project notes (status, related links). Example: "Before I file this — is there a date for this event, or a link you'd want included?"
 - Ask about ambiguous associations: "Is this part of AE Studio? Project X?"
 - Flag sensitive-looking notes and suggest moving to `Keep/`
 - User confirms, redirects, renames, or skips each one
@@ -195,6 +196,35 @@ Brief description.
 ## Meetings
 - ...
 ```
+
+### Phase 5: Clean TODO Formatting
+
+Scan all `TODO.md` files in the vault for inconsistent formatting and normalize them.
+
+**Look for:**
+- Plain text items: `do this thing` or `todo - do this thing`
+- Informal prefixes: `TODO:`, `todo -`, `- todo:`, `* item`
+- Items that are clearly action items but lack a checkbox
+
+**Normalize to:** `- [ ] item text`
+
+Show a diff-style preview before making any changes:
+
+```
+Career/AE Studio/TODO.md — 2 items need formatting:
+
+  "todo - follow up on X"       →  - [ ] Follow up on X
+  "setup workspace"             →  - [ ] Setup workspace
+
+Fix these? [y/n]
+```
+
+**Rules:**
+- Already-formatted items (`- [ ]`, `- [x]`) — leave them alone
+- Completed items marked `- [x]` — leave them alone
+- If the meaning is ambiguous (not clearly a TODO), skip it and flag it: "Not sure if this is a TODO: 'Gusto' — skip?"
+- Capitalize the first word of each item for consistency
+- Always show the full list of changes and get confirmation before writing
 
 ## What This Skill Does NOT Do
 
