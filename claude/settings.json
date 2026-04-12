@@ -1,4 +1,16 @@
 {
+  "permissions": {
+    "allow": [
+      "Bash(*)",
+      "Read",
+      "WebSearch",
+      "WebFetch(*)"
+    ],
+    "deny": [
+      "Bash(git push --force *)",
+      "Bash(rm -rf *)"
+    ]
+  },
   "enabledPlugins": {
     "superpowers@superpowers-marketplace": true,
     "rust-analyzer-lsp@claude-plugins-official": true
