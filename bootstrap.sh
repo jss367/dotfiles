@@ -8,35 +8,44 @@ warn() { printf "\033[1;33m==>\033[0m %s\n" "$1"; }
 success() { printf "\033[1;32m==>\033[0m %s\n" "$1"; }
 
 # --- Homebrew ---
-if ! command -v brew &>/dev/null; then
+# Locate brew across platforms: macOS ARM, macOS Intel, Linuxbrew
+find_brew() {
+    if command -v brew &>/dev/null; then command -v brew; return; fi
+    for candidate in /opt/homebrew/bin/brew /usr/local/bin/brew /home/linuxbrew/.linuxbrew/bin/brew; do
+        [[ -x "$candidate" ]] && { echo "$candidate"; return; }
+    done
+}
+
+if [[ -z "$(find_brew)" ]]; then
     info "Installing Homebrew..."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    eval "$(/opt/homebrew/bin/brew shellenv 2>/dev/null || /usr/local/bin/brew shellenv)"
-else
-    success "Homebrew already installed"
 fi
+BREW_BIN="$(find_brew)"
+eval "$("$BREW_BIN" shellenv)"
+success "Homebrew available at $BREW_BIN"
 
 # Persist Homebrew in .zprofile
 if ! grep -qF 'brew shellenv' "$HOME/.zprofile" 2>/dev/null; then
     info "Adding Homebrew to .zprofile..."
     echo >> "$HOME/.zprofile"
-    echo 'eval "$(/opt/homebrew/bin/brew shellenv zsh)"' >> "$HOME/.zprofile"
+    echo "eval \"\$($BREW_BIN shellenv zsh)\"" >> "$HOME/.zprofile"
 fi
 
 # --- Brew packages ---
 info "Installing brew packages..."
 brew bundle --file="$DOTFILES_DIR/Brewfile"
 
-# --- iTerm2 appearance ---
-info "Configuring iTerm2 dark theme, colors, and font..."
+# --- iTerm2 appearance (macOS only) ---
+if [[ "$(uname)" == "Darwin" ]]; then
+    info "Configuring iTerm2 dark theme, colors, and font..."
 
-# Dark window chrome (1 = Dark)
-defaults write com.googlecode.iterm2 TabStyleWithAutomaticOption -int 1
+    # Dark window chrome (1 = Dark)
+    defaults write com.googlecode.iterm2 TabStyleWithAutomaticOption -int 1
 
-# Use a Dynamic Profile — iTerm2 picks these up automatically, no plist hacking needed
-DYNAMIC_DIR="$HOME/Library/Application Support/iTerm2/DynamicProfiles"
-mkdir -p "$DYNAMIC_DIR"
-cat > "$DYNAMIC_DIR/dotfiles.json" << 'EOF'
+    # Use a Dynamic Profile — iTerm2 picks these up automatically, no plist hacking needed
+    DYNAMIC_DIR="$HOME/Library/Application Support/iTerm2/DynamicProfiles"
+    mkdir -p "$DYNAMIC_DIR"
+    cat > "$DYNAMIC_DIR/dotfiles.json" << 'EOF'
 {
     "Profiles": [{
         "Name": "Default",
@@ -58,9 +67,7 @@ cat > "$DYNAMIC_DIR/dotfiles.json" << 'EOF'
     }]
 }
 EOF
-
-# Note: don't override Default Bookmark Guid — let iTerm2 manage it.
-# The dynamic profile inherits from "Default" and iTerm2 picks it up on restart.
+fi
 
 # --- Oh My Zsh ---
 if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
@@ -89,14 +96,22 @@ else
 fi
 
 # --- MesloLGS Nerd Font ---
-FONT_DIR="$HOME/Library/Fonts"
+if [[ "$(uname)" == "Darwin" ]]; then
+    FONT_DIR="$HOME/Library/Fonts"
+else
+    FONT_DIR="$HOME/.local/share/fonts"
+fi
+mkdir -p "$FONT_DIR"
 if [[ ! -f "$FONT_DIR/MesloLGS NF Regular.ttf" ]]; then
-    info "Installing MesloLGS Nerd Font..."
+    info "Installing MesloLGS Nerd Font to $FONT_DIR..."
     FONT_BASE="https://github.com/romkatv/powerlevel10k-media/raw/master"
     curl -fsSL -o "$FONT_DIR/MesloLGS NF Regular.ttf"      "$FONT_BASE/MesloLGS%20NF%20Regular.ttf"
     curl -fsSL -o "$FONT_DIR/MesloLGS NF Bold.ttf"          "$FONT_BASE/MesloLGS%20NF%20Bold.ttf"
     curl -fsSL -o "$FONT_DIR/MesloLGS NF Italic.ttf"        "$FONT_BASE/MesloLGS%20NF%20Italic.ttf"
     curl -fsSL -o "$FONT_DIR/MesloLGS NF Bold Italic.ttf"   "$FONT_BASE/MesloLGS%20NF%20Bold%20Italic.ttf"
+    if [[ "$(uname)" == "Linux" ]] && command -v fc-cache &>/dev/null; then
+        fc-cache -f "$FONT_DIR"
+    fi
 else
     success "MesloLGS Nerd Font already installed"
 fi
@@ -196,39 +211,54 @@ ln -sfn "$DOTFILES_DIR/claude/skills" "$HOME/.claude/skills"
 
 # --- VS Code & Cursor ---
 info "Linking VS Code and Cursor config..."
-VSCODE_USER_DIR="$HOME/Library/Application Support/Code/User"
-CURSOR_USER_DIR="$HOME/Library/Application Support/Cursor/User"
+if [[ "$(uname)" == "Darwin" ]]; then
+    VSCODE_USER_DIR="$HOME/Library/Application Support/Code/User"
+    CURSOR_USER_DIR="$HOME/Library/Application Support/Cursor/User"
+else
+    VSCODE_USER_DIR="$HOME/.config/Code/User"
+    CURSOR_USER_DIR="$HOME/.config/Cursor/User"
+fi
 mkdir -p "$VSCODE_USER_DIR" "$CURSOR_USER_DIR"
 ln -sf "$DOTFILES_DIR/vscode/settings.json" "$VSCODE_USER_DIR/settings.json"
 ln -sf "$DOTFILES_DIR/vscode/keybindings.json" "$VSCODE_USER_DIR/keybindings.json"
 ln -sf "$DOTFILES_DIR/vscode/settings.json" "$CURSOR_USER_DIR/settings.json"
 ln -sf "$DOTFILES_DIR/vscode/keybindings.json" "$CURSOR_USER_DIR/keybindings.json"
 
-# --- Karabiner ---
-KARABINER_DIR="$HOME/.config/karabiner"
-if [[ -d "$DOTFILES_DIR/karabiner" ]]; then
-    info "Linking Karabiner config..."
-    mkdir -p "$HOME/.config"
-    ln -sfn "$DOTFILES_DIR/karabiner" "$KARABINER_DIR"
+# --- Karabiner (macOS only) ---
+if [[ "$(uname)" == "Darwin" ]]; then
+    KARABINER_DIR="$HOME/.config/karabiner"
+    if [[ -d "$DOTFILES_DIR/karabiner" ]]; then
+        info "Linking Karabiner config..."
+        mkdir -p "$HOME/.config"
+        ln -sfn "$DOTFILES_DIR/karabiner" "$KARABINER_DIR"
+    fi
 fi
 
 # --- macOS defaults ---
-info "Applying macOS defaults..."
-bash "$DOTFILES_DIR/macos-defaults.sh"
+if [[ "$(uname)" == "Darwin" ]]; then
+    info "Applying macOS defaults..."
+    bash "$DOTFILES_DIR/macos-defaults.sh"
+fi
 
 # --- Patch .zshrc ---
 ZSHRC="$HOME/.zshrc"
+# Portable in-place sed: BSD sed (macOS) needs `-i ''`, GNU sed (Linux) needs `-i`
+if [[ "$(uname)" == "Darwin" ]]; then
+    sed_inplace() { sed -i '' "$@"; }
+else
+    sed_inplace() { sed -i "$@"; }
+fi
 if [[ -f "$ZSHRC" ]]; then
     # Set theme to powerlevel10k
     if grep -q 'ZSH_THEME="robbyrussell"' "$ZSHRC"; then
         info "Setting ZSH_THEME to powerlevel10k..."
-        sed -i '' 's/ZSH_THEME="robbyrussell"/ZSH_THEME="powerlevel10k\/powerlevel10k"/' "$ZSHRC"
+        sed_inplace 's/ZSH_THEME="robbyrussell"/ZSH_THEME="powerlevel10k\/powerlevel10k"/' "$ZSHRC"
     fi
 
     # Set plugins
     if grep -q 'plugins=(git)' "$ZSHRC"; then
         info "Setting plugins to (git zsh-autosuggestions)..."
-        sed -i '' 's/plugins=(git)/plugins=(git zsh-autosuggestions)/' "$ZSHRC"
+        sed_inplace 's/plugins=(git)/plugins=(git zsh-autosuggestions)/' "$ZSHRC"
     fi
 
     # Source rc.d scripts
@@ -246,5 +276,9 @@ if [[ -f "$ZSHRC" ]]; then
 fi
 
 echo ""
-success "Done! Open a new iTerm2 window to see everything in action."
-info "iTerm2 is configured with dark theme, MesloLGS NF font, and preferences from dotfiles"
+if [[ "$(uname)" == "Darwin" ]]; then
+    success "Done! Open a new iTerm2 window to see everything in action."
+    info "iTerm2 is configured with dark theme, MesloLGS NF font, and preferences from dotfiles"
+else
+    success "Done! Start a new shell (or open a new Kitty window) to see everything in action."
+fi
