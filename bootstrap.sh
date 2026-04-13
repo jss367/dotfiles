@@ -224,6 +224,11 @@ ln -sf "$DOTFILES_DIR/vscode/keybindings.json" "$VSCODE_USER_DIR/keybindings.jso
 ln -sf "$DOTFILES_DIR/vscode/settings.json" "$CURSOR_USER_DIR/settings.json"
 ln -sf "$DOTFILES_DIR/vscode/keybindings.json" "$CURSOR_USER_DIR/keybindings.json"
 
+# --- WezTerm ---
+info "Linking WezTerm config..."
+mkdir -p "$HOME/.config/wezterm"
+ln -sf "$DOTFILES_DIR/wezterm/wezterm.lua" "$HOME/.config/wezterm/wezterm.lua"
+
 # --- Karabiner (macOS only) ---
 if [[ "$(uname)" == "Darwin" ]]; then
     KARABINER_DIR="$HOME/.config/karabiner"
