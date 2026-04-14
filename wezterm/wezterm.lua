@@ -19,6 +19,8 @@ config.window_padding = { left = 6, right = 6, top = 4, bottom = 4 }
 -- Scrollback comparable to iTerm2 defaults
 config.scrollback_lines = 10000
 
+config.window_close_confirmation = 'NeverPrompt'
+
 -- iTerm2-style split bindings. Keep WezTerm's default pane navigation.
 -- On Linux the Super/Windows key is grabbed by the DE, so use CTRL|SHIFT instead.
 local is_mac = wezterm.target_triple:find('darwin') ~= nil
@@ -28,7 +30,7 @@ local mod_shift = is_mac and 'CMD|SHIFT' or 'CTRL|SHIFT|ALT'
 config.keys = {
   { key = 'd', mods = mod,       action = act.SplitHorizontal { domain = 'CurrentPaneDomain' } },
   { key = 'd', mods = mod_shift, action = act.SplitVertical   { domain = 'CurrentPaneDomain' } },
-  { key = 'w', mods = mod,       action = act.CloseCurrentPane { confirm = true } },
+  { key = 'w', mods = mod,       action = act.CloseCurrentPane { confirm = false } },
 }
 
 return config
