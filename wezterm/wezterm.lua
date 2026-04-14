@@ -33,4 +33,15 @@ config.keys = {
   { key = 'w', mods = mod,       action = act.CloseCurrentPane { confirm = false } },
 }
 
+-- Color SSH tabs distinctly (pairs with ssh() wrapper in dotfiles/shell/rc.d/ssh-colors.zsh)
+wezterm.on('format-tab-title', function(tab)
+    local title = tab.active_pane.title
+    local is_ssh = title:match('^ssh:')
+    return {
+        { Background = { Color = is_ssh and '#5c1a1a' or '#2a2a30' } },
+        { Foreground = { Color = '#ffffff' } },
+        { Text = ' ' .. title .. ' ' },
+    }
+end)
+
 return config
