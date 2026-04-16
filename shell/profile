@@ -76,6 +76,8 @@ alias cdx='codex --dangerously-bypass-approvals-and-sandbox'
 
 alias snas='ssh julius_admin@192.168.4.75'
 alias sl='ssh julius@192.168.4.248'
+alias lport='ssh -L 8000:localhost:8000 julius@192.168.4.248'
+alias dport='nohup python3 -m http.server 8000'
 
 alias v='cd ~/git/vireo'
 
