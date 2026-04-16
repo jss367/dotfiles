@@ -33,6 +33,7 @@ config.keys = {
   { key = 'd', mods = mod,       action = act.SplitHorizontal { domain = 'CurrentPaneDomain' } },
   { key = 'd', mods = mod_shift, action = act.SplitVertical   { domain = 'CurrentPaneDomain' } },
   { key = 'w', mods = mod,       action = act.CloseCurrentPane { confirm = false } },
+  { key = 'Enter', mods = 'SHIFT', action = act.SendString('\n') },
 }
 
 -- Color SSH tabs distinctly (pairs with ssh() wrapper in dotfiles/shell/rc.d/ssh-colors.zsh)
