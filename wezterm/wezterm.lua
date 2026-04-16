@@ -21,6 +21,8 @@ config.scrollback_lines = 10000
 
 config.window_close_confirmation = 'NeverPrompt'
 
+config.enable_kitty_keyboard = true
+
 -- iTerm2-style split bindings. Keep WezTerm's default pane navigation.
 -- On Linux the Super/Windows key is grabbed by the DE, so use CTRL|SHIFT instead.
 local is_mac = wezterm.target_triple:find('darwin') ~= nil
